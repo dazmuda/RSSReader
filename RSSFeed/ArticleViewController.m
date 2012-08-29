@@ -13,7 +13,6 @@
 @end
 
 @implementation ArticleViewController
-@synthesize webView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -28,7 +27,7 @@
 {
     [super viewDidLoad];
     
-    NSString *urlAddress = @"http://www.google.com";
+    NSString *urlAddress = self.url;
     
     //Create a URL object.
     NSURL *url = [NSURL URLWithString:urlAddress];
@@ -37,7 +36,7 @@
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     
     //Load the request in the UIWebView.
-    [webView loadRequest:requestObj];
+    [self.webView loadRequest:requestObj];
 }
 
 - (void)viewDidUnload

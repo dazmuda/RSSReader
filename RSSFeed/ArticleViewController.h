@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ArticleViewController : UIViewController
-@property (strong, nonatomic) NSDictionary *currentArticle;
+@property (strong, nonatomic) NSString *url;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
 @end

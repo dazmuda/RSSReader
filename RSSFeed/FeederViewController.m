@@ -20,7 +20,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+
     }
     return self;
 }
@@ -72,12 +72,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // User clicked a cell --> go to article in ArticleView
-    NSDictionary *currentArticle = [self.rssData objectAtIndex: indexPath.row];
     ArticleViewController *avc = [ArticleViewController new];
-    avc.currentArticle = currentArticle;
+    avc.url =  [[[self.rssData objectAtIndex: indexPath.row] objectForKey:@"atom:link"] objectForKey:@"href"];
+
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:avc animated:YES];
-    
 }
 
 - (void) makeRequest
@@ -93,11 +92,9 @@
     //now we use this parser on our response to get a parsedResponse
     id parsedResponse = [xmlParser objectFromString:[response bodyAsString] error:nil];
     self.rssData = [[[parsedResponse objectForKey:@"rss"] objectForKey:@"channel"] objectForKey:@"item"];
-//    NSLog(@"%@", self.rssData);
-    NSLog(@"%@", [self.rssData objectAtIndex:0]);
+
+    // NSLog(@"%@", [self.rssData objectAtIndex:0]);
     [self.tableView reloadData];
 }
-
-
 
 @end
