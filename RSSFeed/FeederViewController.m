@@ -10,7 +10,7 @@
 #import "FeederViewController.h"
 #import "ArticleViewController.h"
 
-@interface FeederViewController () <RKRequestDelegate>
+@interface FeederViewController () <RKRequestDelegate,NSURLConnectionDelegate>
 @property (strong, nonatomic) NSArray* rssData;
 @end
 
@@ -56,7 +56,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     // Populate the cells
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"question"];
     
@@ -64,8 +63,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"article"];
     }
     
+    //  Grab the article for the cell
     NSDictionary *currentArticle = [self.rssData objectAtIndex: indexPath.row];
+    
     cell.textLabel.text = [currentArticle objectForKey:@"title"];
+
     return cell;
 }
 
@@ -85,6 +87,7 @@
     [client get:@"/HomePage.xml" delegate:self];
 }
 
+// Delegate for RestKit requests
 - (void)request:(RKRequest *)request didLoadResponse:(RKResponse *)response
 {
     //here we create a new parser that can handle the RSS MIME type
@@ -93,8 +96,20 @@
     id parsedResponse = [xmlParser objectFromString:[response bodyAsString] error:nil];
     self.rssData = [[[parsedResponse objectForKey:@"rss"] objectForKey:@"channel"] objectForKey:@"item"];
 
-    // NSLog(@"%@", [self.rssData objectAtIndex:0]);
+    //  Asyncrhonously request the webpage that the article url links to and scrape the page for the largest image.  Set the cell's imageView property to a thumbnail of this image
+//    NSDictionary *currentArticle = [self.rssData objectAtIndex:0];
+//    NSURL *url = [NSURL URLWithString:[[currentArticle objectForKey:@"atom:link"] objectForKey:@"href"]];
+//    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
+//
+//    [NSURLConnection sendAsynchronousRequest:urlRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+//      grab image and populate model with said images
+    
+//        NSLog(@"Asynchronous data: %@",data);
+//    }];  
+
     [self.tableView reloadData];
 }
 
 @end
+
+
