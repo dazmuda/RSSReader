@@ -39,7 +39,9 @@ PODS:
   - XMLReader (0.0.1)
   - cocoa-oauth (0.0.1):
     - NSData+Base64 (~> 1.0)
+  - hpple (0.1.0)
 
 DEPENDENCIES:
   - RestKit
   - RestKit/XML
+  - hpple

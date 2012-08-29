@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		84DB53BC15EEC6BE005166AE /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 84DB53BB15EEC6BE005166AE /* libxml2.2.dylib */; };
 		87370691B1EA464CB33438D0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6E7F4C66CC4E9882A6FE03 /* libPods.a */; };
 		8AC3E6AA15EDAE4A0062733F /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC3E6A915EDAE4A0062733F /* Article.m */; };
 		8AFC451B15ED8500007718DB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AFC451A15ED8500007718DB /* UIKit.framework */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		428F8A0894E646899A361F49 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		84DB53BB15EEC6BE005166AE /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		8AC3E6A815EDAE4A0062733F /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
 		8AC3E6A915EDAE4A0062733F /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
 		8AFC451615ED8500007718DB /* RSSFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSSFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84DB53BC15EEC6BE005166AE /* libxml2.2.dylib in Frameworks */,
 				8AFC451B15ED8500007718DB /* UIKit.framework in Frameworks */,
 				8AFC451D15ED8500007718DB /* Foundation.framework in Frameworks */,
 				8AFC451F15ED8500007718DB /* CoreGraphics.framework in Frameworks */,
@@ -80,6 +83,7 @@
 		8AFC451915ED8500007718DB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				84DB53BB15EEC6BE005166AE /* libxml2.2.dylib */,
 				8AFC451A15ED8500007718DB /* UIKit.framework */,
 				8AFC451C15ED8500007718DB /* Foundation.framework */,
 				8AFC451E15ED8500007718DB /* CoreGraphics.framework */,

@@ -9,9 +9,10 @@
 #import "RestKit.h"
 #import "FeederViewController.h"
 #import "ArticleViewController.h"
+#import "Article.h"
 
 @interface FeederViewController () <RKRequestDelegate,NSURLConnectionDelegate>
-@property (strong, nonatomic) NSArray* rssData;
+@property (strong, nonatomic) NSMutableArray* articlesArray;
 @end
 
 @implementation FeederViewController
@@ -51,23 +52,31 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.rssData count];
+    return [self.articlesArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Populate the cells
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"question"];
+    //lets make a new cell class that inheritys from tvc and use that instead!
     
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"article"];
     }
     
     //  Grab the article for the cell
-    NSDictionary *currentArticle = [self.rssData objectAtIndex: indexPath.row];
-    
-    cell.textLabel.text = [currentArticle objectForKey:@"title"];
+    Article *currentArticle = [self.articlesArray objectAtIndex: indexPath.row];
+    cell.textLabel.text = currentArticle.title;
 
+    [currentArticle retrieveImageWithBlock:^{
+        //set the image for the cell as the image you got back
+        cell.imageView.image = currentArticle.image;
+        //refresh the cell
+        [cell setNeedsLayout];
+        
+    }];
+    
     return cell;
 }
 
@@ -75,7 +84,8 @@
 {
     // User clicked a cell --> go to article in ArticleView
     ArticleViewController *avc = [ArticleViewController new];
-    avc.url =  [[[self.rssData objectAtIndex: indexPath.row] objectForKey:@"atom:link"] objectForKey:@"href"];
+    Article *currentArticle = [self.articlesArray objectAtIndex:indexPath.row];
+    avc.url = currentArticle.url;
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self.navigationController pushViewController:avc animated:YES];
@@ -94,19 +104,16 @@
     id xmlParser = [[RKParserRegistry sharedRegistry] parserForMIMEType:RKMIMETypeXML];
     //now we use this parser on our response to get a parsedResponse
     id parsedResponse = [xmlParser objectFromString:[response bodyAsString] error:nil];
-    self.rssData = [[[parsedResponse objectForKey:@"rss"] objectForKey:@"channel"] objectForKey:@"item"];
+    NSArray* rssData = [[[parsedResponse objectForKey:@"rss"] objectForKey:@"channel"] objectForKey:@"item"];
 
-    //  Asyncrhonously request the webpage that the article url links to and scrape the page for the largest image.  Set the cell's imageView property to a thumbnail of this image
-//    NSDictionary *currentArticle = [self.rssData objectAtIndex:0];
-//    NSURL *url = [NSURL URLWithString:[[currentArticle objectForKey:@"atom:link"] objectForKey:@"href"]];
-//    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
-//
-//    [NSURLConnection sendAsynchronousRequest:urlRequest queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//      grab image and populate model with said images
     
-//        NSLog(@"Asynchronous data: %@",data);
-//    }];  
-
+    self.articlesArray = [NSMutableArray new];
+    for (NSDictionary* articleHash in rssData) {
+        Article *article = [Article new];
+        article.title = [articleHash objectForKey:@"title"];
+        article.url = [[articleHash objectForKey:@"atom:link"] objectForKey:@"href"];
+        [self.articlesArray addObject:article];
+    }
     [self.tableView reloadData];
 }
 
